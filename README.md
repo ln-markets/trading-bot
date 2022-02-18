@@ -5,11 +5,9 @@ Simple bots for algorithmic trading with LN Markets API.
 
 ## Install
 
-Download this Github repopsitory and install the following 3 packages with pip.
+Download this Github repopsitory and install dependencies.
 ```
-pip install ln-markets
-pip install pyaml
-pip install tweepy
+pip install -r requirements.txt
 ```
 
 ## Authentication

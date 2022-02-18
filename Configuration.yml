@@ -1,0 +1,73 @@
+## your personal information from LNMarkets
+lnm_credentials: 
+  key: 'your_api_key'
+  secret: 'your_api_secret'
+  passphrase: 'your_api_passphrase'
+  network: 'testnet'
+
+## your personal information for Twitter (developer account)
+twitter_credentials:
+  bearer_token: 'your_bearer_token'
+  consumer_key: 'your_consumer_key'
+  consumer_key_secret: 'your_consumer_key_secret'
+  access_token: 'your_access_token'
+  access_token_secret: 'your_access_token_secret'
+
+
+## choose your strategy while affecting True (and False to other strategies)
+Strategies: 
+  Random: False
+  Random_Backtest: False
+  Twitter: False
+  Twitter_Backtest: False
+  Ema: False
+  Ema_Backtest: False
+
+
+## parameters for strategies
+
+Random:
+  all_in: False # True to go randomly all in, type=Boolean
+  max_quantity: 20 # the bot will open positions until this quantity is reached, type=int, min=1
+  max_leverage: 10 # leverage is randomly picked between 1 and max_leverage, type=int, min=1, max=100
+  interval: 600 # time in seconds between the opening of two positions, type=int
+
+Random_Backtest:
+  initial_datetime: '2022-01-21T16:01' # backtest begins at this date. It is important to respect format YYYY-mm-DDTHH:MM, type=str, min='2021-08-01T00:00', max=now
+  all_in: False
+  max_quantity: 20
+  max_leverage: 10
+  interval: 600
+
+Twitter:
+  fear_and_greed: True # if True then the bot will follow Twitter Fear and Greed index (@BitcoinFear). If False nothing happens, type=Boolean
+  keywords: ['Bitcoin', 'bitcoin', 'BTC', 'LN', 'Lightning Network', 'LN Markets'] # type=list (of str)
+  # usernames must be without @
+  usernames_long: ['LNMarkets'] # when one of these accounts publishes a keyword, the bot opens a long position, type=list (of str)
+  usernames_short: ['elonmusk'] # when one of these accounts publishes a keyword, the bot opens a short position, type=list (of str)
+  quantity_per_order: 20 # type=int, min=1
+  leverage: 10 # type=int, min=1, max=100
+  
+Twitter_Backtest:
+  initial_datetime: '2022-01-21T16:01' # backtest begins at this date. It is important to respect format YYYY-mm-DDTHH:MM, type=str, min='2021-08-01T00:00', max=now
+  fear_and_greed: True
+  keywords: ['Bitcoin', 'bitcoin', 'BTC', 'LN', 'Lightning Network', 'LN Markets']
+  usernames_long: ['LNMarkets']
+  usernames_short: ['elonmusk']
+  quantity_per_order: 20
+  leverage: 10
+
+Ema:
+  quantity_per_order: 20 # type=int, min=1
+  leverage: 10 # type=int, min=1, max=100
+  little_period: 50 # period of your most recent EMA, type=int, min=10
+  big_period: 200 # period of your mless recent EMA, type=int, min=little_period+10
+  time_scale: 'minutes' # interval between two periods, type=str, accepted_values=['minutes', 'hours']
+
+Ema_Backtest:
+  initial_datetime: '2022-01-21T16:01' # backtest begins at this date. It is important to respect format YYYY-mm-DDTHH:MM, type=str, min='2021-08-01T00:00', max=now
+  quantity_per_order: 20
+  leverage: 10
+  little_period: 50
+  big_period: 200
+  time_scale: 'hours'

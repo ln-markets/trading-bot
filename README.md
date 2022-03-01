@@ -1,6 +1,7 @@
 # LN Markets Python Bot
 
-Simple bots for algorithmic trading with LN Markets API.  
+A simple bot for algorithmic trading with LN Markets API.
+
 > :warning: CAUTION: Use at your own risk. This repo is meant to be a reference and created for educational purposes only.  Please use carefully, preferably on Testnet or with small amounts.
 
 ## Install

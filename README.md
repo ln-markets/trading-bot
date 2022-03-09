@@ -47,7 +47,7 @@ Strategies:
 
 ## Parameters
 
-In 'Credentials.yml', you can define some parameters to customize your strategy.
+In 'Configuration.yml', you can define some parameters to customize your strategy.
 
 ```
 # Example

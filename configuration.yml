@@ -1,0 +1,19 @@
+## your personal information from lnmarkets.com
+lnm_credentials: 
+  key: 'your_api_key'
+  secret: 'your_api_secret'
+  passphrase: 'your_passphrase'
+  network: 'testnet'
+
+## choose your strategy while affecting True (and False to other strategies)
+strategies:
+  #Trading strat based on TA Summary: https://www.tradingview.com/symbols/XBTUSD/technicals/
+  ta_summary: True
+  
+
+## parameters for strategies
+ta_summary:
+  quantity: 10 #type=int, min=1, quantity of each open position
+  leverage: 10 #type=int, min=1, max=100
+  interval: '5m' #type=string, available interval between 2 TA summary signals: "1m" for 1 minute, "5m" for 5 minutes, "15m" for 15 minutes, "30m" for 30 minutes, "1h" for 1 hour, "2h" for 2 hours, "4h" for 4 hours, "1d" for 1 day, "1W" for 1 week, "1M" for 1 month
+  timeout: 60 #type=int, min=1, number of minutes the trading strat will be running

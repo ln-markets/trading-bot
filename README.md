@@ -29,6 +29,7 @@ You can also add the paramter network with 'testnet' for [LN Markets Testnet](ht
 Current available strategies are:
 - ta_summary: use the [Trading View Technical Analysis](https://www.tradingview.com/symbols/XBTUSD/technicals/) summary indicator based on 27 signals (oscillators and moving averages) to open and keep a long or short future position
 - More to come
+
 More details below.
 
 Open the 'configuration.yml' file.

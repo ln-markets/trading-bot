@@ -10,6 +10,7 @@ Please use carefully, preferably on Testnet or with small amounts.
 
 Download this Github repopsitory and install dependencies.
 ```
+pip install -r requirements.txt
 ```
 
 ## Authentication

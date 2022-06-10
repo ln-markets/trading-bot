@@ -10,7 +10,6 @@ Please use carefully, preferably on Testnet or with small amounts.
 
 Download this Github repopsitory and install dependencies.
 ```
-pip install -r requirements.txt
 ```
 
 ## Authentication
@@ -66,7 +65,7 @@ If not, double check the API Key, Secret, and Passphrase you  entered.
 ## ta_summary
 
 How does it work?  
-Once the bot is launched, it follows [Trading View Technical Analysis](https://www.tradingview.com/symbols/XBTUSD/technicals/) summary indicator based on 27 signals (oscillators and moving averages) to open and keep running a long Future position while the signal is "BUY" or "STRONG BUY", open and keep running a short Future position while the signal is "SHORT" or "STRONG SHORT", or close any position while the signal is "NEUTRAL".
+Once the bot is launched, it follows [Trading View Technical Analysis](https://www.tradingview.com/symbols/XBTUSD/technicals/) summary indicator based on 27 signals (oscillators and moving averages) to open and keep running a long Future position while the signal is "BUY" or "STRONG BUY", open and keep running a short Future position while the signal is "SELL" or "STRONG SELL", or close any position while the signal is "NEUTRAL".
 While the bot is running, you can have either 0 or 1 position running maximum. 
 
 ### Parameters to customize the bot

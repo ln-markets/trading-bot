@@ -19,6 +19,8 @@ def bot():
         config = yaml_file['ta_summary']
         return TAS.ta_summary(TAS(lnm_options), 
                                     quantity = config['quantity'], 
-                                    leverage = config['leverage'], 
+                                    leverage = config['leverage'],
+                                    takeprofit = config['takeprofit'],
+                                    stoploss = config['stoploss'],
                                     interval = config['interval'], 
                                     timeout = config['timeout'])

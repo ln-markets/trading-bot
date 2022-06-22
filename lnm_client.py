@@ -22,26 +22,30 @@ class lnm_client():
         print(self.lnm.get_user())
 
 
-    def market_long(self, quantity, leverage):
+    def market_long(self, quantity, leverage, takeprofit, stoploss):
         params = {
             'type': 'm',
             'side': 'b',
             'quantity': quantity,
-            'leverage': leverage
+            'leverage': leverage,
+            'takeprofit': takeprofit,
+            'stoploss': stoploss
         }
         logging.info(datetime.datetime.fromtimestamp(time()))
-        logging.info(f'New Market Buy Running for Quantity = {quantity} and Leverage = {leverage}')
+        logging.info(f'New Market Buy Running for Quantity = {quantity}, leverage = {leverage}, take profit = {takeprofit}, stop loss = {stoploss}')
         return self.lnm.futures_new_position(params)
 
-    def market_short(self, quantity, leverage):
+    def market_short(self, quantity, leverage, takeprofit, stoploss):
         params = {
             'type': 'm',
             'side': 's',
             'quantity': quantity,
-            'leverage': leverage
+            'leverage': leverage,
+            'takeprofit': takeprofit,
+            'stoploss': stoploss
         }
         logging.info(datetime.datetime.fromtimestamp(time()))
-        logging.info(f'New Market Sell Running for Quantity = {quantity} and Leverage = {leverage}')
+        logging.info(f'New Market Sell Running for Quantity = {quantity}, leverage = {leverage}, take profit = {takeprofit}, stop loss = {stoploss}')
         return self.lnm.futures_new_position(params)
     
     
@@ -54,24 +58,27 @@ class lnm_client():
 
         return self.lnm.futures_close_position(params)
 
-    def get_positions(self):
+    def get_positions(self, type_pos):
         params = {
-            'type': 'closed',
+            'type': type_pos,
             }
-        logging.info(datetime.datetime.fromtimestamp(time()))
-        logging.info('Retrieving closed positions')
-
         return self.lnm.futures_get_positions(params)
+
+    def get_bid_offer(self):
+        return self.lnm.futures_get_ticker()
+
+    
 
 
 # options = {
-#     'key': 'qE8nObMFzyEHd5moHZxBY7LeYkxVQrH8VxEsLHVI9Sw=',
-#     'secret': 'Z7oTS5WtsmBqp1ysg46RSQ7Wtt9xP7ANC4z0NZaETKBWo74rZXZqEKynpfKyf5gKU0R3xWVn1DrSljA5LXqSUw==',
-#     'passphrase': '8eehc19ghfc97',
+#     'key': 'dR2dnom1oMljsN33DJjxNA7bSvItEg82sdZ00HjxY7s=',
+#     'secret': '4VW5Zp5K4DqOZC8Zr4jd2dw5Bi/G8nxs9qEK3fQ7aIVGrzjsczMpbZQonKoe89N+V3MwFdUHoYn1ydh7eHf5Rg==',
+#     'passphrase': 'dg05hcihaci8f',
 #     'network': 'testnet'}
 
 # lnm = lnm_client(options)
 
-# #lnm.close_position(pid='2729a816-f22c-4488-a29b-972f67cee967')
 
-# lnm.market_long(quantity = 10, leverage = 10)
+# lnm.close_position(pid='2729a816-f22c-4488-a29b-972f67cee967')
+# lnm.market_long(quantity = 10, leverage = 10, takeprofit = 25000, stoploss = 20000)
+# print(json.loads(lnm.get_bid_offer())['offer'])

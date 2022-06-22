@@ -1,19 +1,9 @@
 ## your personal information from LNMarkets (Rufus10 - Mainnet)
 lnm_credentials: 
-  key: '/yc7NKqrDJLC87PyY8gjyP7NQOKMC0K0U6VdQa5iUqs='
-  secret: 'EnKRjabxoq+DNPQnOg90rTCngO8wpW1/R9DPJFQZhvT4QNj7u3CbWPIFrSy5W7kL/UatLsV/h+WbfOYh6Zxp9w=='
-  passphrase: '2i274426gjc8j'
+  key: 'your_api_key'
+  secret: 'your_api_secret'
+  passphrase: 'your_api_passphrase'
   network: 'mainnet'
-
-
-## your personal information from LNMarkets (Rufus15 - Testnet)
-# lnm_credentials: 
-#   key: 'dR2dnom1oMljsN33DJjxNA7bSvItEg82sdZ00HjxY7s='
-#   secret: '4VW5Zp5K4DqOZC8Zr4jd2dw5Bi/G8nxs9qEK3fQ7aIVGrzjsczMpbZQonKoe89N+V3MwFdUHoYn1ydh7eHf5Rg=='
-#   passphrase: 'dg05hcihaci8f'
-#   network: 'testnet'
-
-
 
 ## choose your strategy while affecting True (and False to other strategies)
 strategies:

@@ -29,6 +29,7 @@ You can also add the paramter network with 'testnet' for [LN Markets Testnet](ht
 Current available strategies are:
 - ta_summary: use the [Trading View Technical Analysis](https://www.tradingview.com/symbols/XBTUSD/technicals/) summary indicator based on 27 signals (oscillators and moving averages) to open a mean-reverting strategy with a long or short future position
 - More to come
+
 More details below.
 
 Open the 'configuration.yml' file.
@@ -65,6 +66,7 @@ If not, double check the API Key, Secret, and Passphrase you  entered.
 ## ta_summary
 
 How does it work?  
+
 Once the bot is launched, it follows [Trading View Technical Analysis](https://www.tradingview.com/symbols/XBTUSD/technicals/) summary indicator based on 27 signals (oscillators and moving averages) to run a mean-reverting strategy. The bot opens and keeps running a long Future position while the signal is "STRONG_SELL" and remains at least "SELL", and a short Future position while the signal is "STRONG_BUY" and remains at least "BUY", and close the position otherwise..
 While the bot is running, you can have either 0 or 1 position running maximum. 
 

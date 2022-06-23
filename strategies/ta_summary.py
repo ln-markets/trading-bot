@@ -54,18 +54,18 @@ class TAS():
     analysis = TAS.get_ta(symbol, screener, exchange, interval)
     print(analysis)
     if (analysis['RECOMMENDATION'] == 'STRONG_BUY'):
-      side = 'short'
-      bid = json.loads(self.lnm.get_bid_offer())['bid']
-      tp = round(bid * (1 - takeprofit))
-      sl = round(bid * (1 + stoploss))
-      pid = json.loads(self.lnm.market_short(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
-      pid_list.append(pid)
-    elif (analysis['RECOMMENDATION'] == 'STRONG_SELL'):
       side = 'long'
       offer = json.loads(self.lnm.get_bid_offer())['offer']
       tp = round(offer * (1 + takeprofit))
       sl = round(offer * (1 - stoploss))
       pid = json.loads(self.lnm.market_long(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
+      pid_list.append(pid)
+    elif (analysis['RECOMMENDATION'] == 'STRONG_SELL'):
+      side = 'short'
+      bid = json.loads(self.lnm.get_bid_offer())['bid']
+      tp = round(bid * (1 - takeprofit))
+      sl = round(bid * (1 + stoploss))
+      pid = json.loads(self.lnm.market_short(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
       pid_list.append(pid)
     else:
       side = 'neutral'
@@ -81,31 +81,31 @@ class TAS():
       pid_running = [json.loads(self.lnm.get_positions(type_pos='running'))[i]['pid'] for i in range(num_pos_running)]
 
       if (pid in pid_running):
-        if side == 'short':
+        if side == 'long':
           if ('BUY' in analysis['RECOMMENDATION']):
-            logging.info('Keep short open')
-          elif (analysis['RECOMMENDATION'] == 'STRONG_SELL'):
-            self.lnm.close_position(pid)
-            side = 'long'
-            offer = json.loads(self.lnm.get_bid_offer())['offer']
-            tp = round(offer * (1 + takeprofit))
-            sl = round(offer * (1 - stoploss))
-            pid = json.loads(self.lnm.market_long(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
-            pid_list.append(pid)            
-          else:
-            self.lnm.close_position(pid)
-            side = 'neutral'
-        elif side == 'long':
-          if ('SELL' in analysis['RECOMMENDATION']):
             logging.info('Keep long open')
-          elif (analysis['RECOMMENDATION'] == 'STRONG_BUY'):
+          elif (analysis['RECOMMENDATION'] == 'STRONG_SELL'):
             self.lnm.close_position(pid)
             side = 'short'
             bid = json.loads(self.lnm.get_bid_offer())['bid']
             tp = round(bid * (1 - takeprofit))
             sl = round(bid * (1 + stoploss))
             pid = json.loads(self.lnm.market_short(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
-            pid_list.append(pid)
+            pid_list.append(pid)        
+          else:
+            self.lnm.close_position(pid)
+            side = 'neutral'
+        elif side == 'short':
+          if ('SELL' in analysis['RECOMMENDATION']):
+            logging.info('Keep short open')
+          elif (analysis['RECOMMENDATION'] == 'STRONG_BUY'):
+            self.lnm.close_position(pid)
+            side = 'long'
+            offer = json.loads(self.lnm.get_bid_offer())['offer']
+            tp = round(offer * (1 + takeprofit))
+            sl = round(offer * (1 - stoploss))
+            pid = json.loads(self.lnm.market_long(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
+            pid_list.append(pid)    
           else:
             self.lnm.close_position(pid)
             side = 'neutral'     
@@ -130,18 +130,18 @@ class TAS():
           
       else:
         if (analysis['RECOMMENDATION'] == 'STRONG_BUY'):
-          side = 'short'
-          bid = json.loads(self.lnm.get_bid_offer())['bid']
-          tp = round(bid * (1 - takeprofit))
-          sl = round(bid * (1 + stoploss))
-          pid = json.loads(self.lnm.market_short(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
-          pid_list.append(pid)
-        elif (analysis['RECOMMENDATION'] == 'STRONG_SELL'):
           side = 'long'
           offer = json.loads(self.lnm.get_bid_offer())['offer']
           tp = round(offer * (1 + takeprofit))
           sl = round(offer * (1 - stoploss))
           pid = json.loads(self.lnm.market_long(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
+          pid_list.append(pid)
+        elif (analysis['RECOMMENDATION'] == 'STRONG_SELL'):
+          side = 'short'
+          bid = json.loads(self.lnm.get_bid_offer())['bid']
+          tp = round(bid * (1 - takeprofit))
+          sl = round(bid * (1 + stoploss))
+          pid = json.loads(self.lnm.market_short(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
           pid_list.append(pid)
         else:
           side = 'neutral'
@@ -167,16 +167,3 @@ class TAS():
     path = os.path.join(os.path.dirname(__file__), "df_closed_pos.csv")
     df_closed_pos.to_csv(path)
     logging.info('df_closed_pos.csv saved in strategies folder')
-
-
-
-
-
-
-
-
-
-
-
-
-

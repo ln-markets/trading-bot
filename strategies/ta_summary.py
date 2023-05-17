@@ -39,7 +39,7 @@ class TAS():
 
   # Output can be a graph showing the evolution of your Balance during the strategy
   def ta_summary(self, quantity, leverage, takeprofit, stoploss, interval, timeout): 
-    symbol='XBTUSD'
+    symbol='XBTUSD.P'
     screener='CRYPTO'
     exchange='BITMEX'
     

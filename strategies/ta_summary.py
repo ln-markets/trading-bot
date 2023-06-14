@@ -49,27 +49,27 @@ class TAS():
 
     timeout = time() + 60*timeout
 
-    pid_list = []
+    id_list = []
 
     analysis = TAS.get_ta(symbol, screener, exchange, interval)
     print(analysis)
     if (analysis['RECOMMENDATION'] == 'STRONG_BUY'):
       side = 'long'
-      offer = json.loads(self.lnm.get_bid_offer())['offer']
-      tp = round(offer * (1 + takeprofit))
-      sl = round(offer * (1 - stoploss))
-      pid = json.loads(self.lnm.market_long(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
-      pid_list.append(pid)
+      last = json.loads(self.lnm.get_last())['lastPrice']
+      tp = round(last * (1 + takeprofit))
+      sl = round(last * (1 - stoploss))
+      id = json.loads(self.lnm.market_long(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['id']
+      id_list.append(id)
     elif (analysis['RECOMMENDATION'] == 'STRONG_SELL'):
       side = 'short'
-      bid = json.loads(self.lnm.get_bid_offer())['bid']
-      tp = round(bid * (1 - takeprofit))
-      sl = round(bid * (1 + stoploss))
-      pid = json.loads(self.lnm.market_short(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
-      pid_list.append(pid)
+      last = json.loads(self.lnm.get_last())['lastPrice']
+      tp = round(last * (1 - takeprofit))
+      sl = round(last * (1 + stoploss))
+      id = json.loads(self.lnm.market_short(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['id']
+      id_list.append(id)
     else:
       side = 'neutral'
-      pid = ''
+      id = ''
       
     sleep(t_interval)
 
@@ -78,52 +78,52 @@ class TAS():
       print(analysis)
 
       num_pos_running = len(json.loads(self.lnm.get_positions(type_pos='running')))
-      pid_running = [json.loads(self.lnm.get_positions(type_pos='running'))[i]['pid'] for i in range(num_pos_running)]
+      id_running = [json.loads(self.lnm.get_positions(type_pos='running'))[i]['id'] for i in range(num_pos_running)]
 
-      if (pid in pid_running):
+      if (id in id_running):
         if side == 'long':
           if ('BUY' in analysis['RECOMMENDATION']):
             logging.info('Keep long open')
           elif (analysis['RECOMMENDATION'] == 'STRONG_SELL'):
-            self.lnm.close_position(pid)
+            self.lnm.close_position(id)
             side = 'short'
-            bid = json.loads(self.lnm.get_bid_offer())['bid']
-            tp = round(bid * (1 - takeprofit))
-            sl = round(bid * (1 + stoploss))
-            pid = json.loads(self.lnm.market_short(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
-            pid_list.append(pid)        
+            last = json.loads(self.lnm.get_last())['lastPrice']
+            tp = round(last * (1 - takeprofit))
+            sl = round(last * (1 + stoploss))
+            id = json.loads(self.lnm.market_short(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['id']
+            id_list.append(id)        
           else:
-            self.lnm.close_position(pid)
+            self.lnm.close_position(id)
             side = 'neutral'
         elif side == 'short':
           if ('SELL' in analysis['RECOMMENDATION']):
             logging.info('Keep short open')
           elif (analysis['RECOMMENDATION'] == 'STRONG_BUY'):
-            self.lnm.close_position(pid)
+            self.lnm.close_position(id)
             side = 'long'
-            offer = json.loads(self.lnm.get_bid_offer())['offer']
-            tp = round(offer * (1 + takeprofit))
-            sl = round(offer * (1 - stoploss))
-            pid = json.loads(self.lnm.market_long(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
-            pid_list.append(pid)    
+            last = json.loads(self.lnm.get_last())['lastPrice']
+            tp = round(last * (1 + takeprofit))
+            sl = round(last * (1 - stoploss))
+            id = json.loads(self.lnm.market_long(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['id']
+            id_list.append(id)    
           else:
-            self.lnm.close_position(pid)
+            self.lnm.close_position(id)
             side = 'neutral'     
         elif side == 'neutral':
           if (analysis['RECOMMENDATION'] == 'STRONG_BUY'):
             side = 'long'
-            offer = json.loads(self.lnm.get_bid_offer())['offer']
-            tp = round(offer * (1 + takeprofit))
-            sl = round(offer * (1 - stoploss))
-            pid = json.loads(self.lnm.market_long(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
-            pid_list.append(pid)
+            last = json.loads(self.lnm.get_last())['lastPrice']
+            tp = round(last * (1 + takeprofit))
+            sl = round(last * (1 - stoploss))
+            id = json.loads(self.lnm.market_long(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['id']
+            id_list.append(id)
           elif (analysis['RECOMMENDATION'] == 'STRONG_SELL'):
             side = 'short'
-            bid = json.loads(self.lnm.get_bid_offer())['bid']
-            tp = round(bid * (1 - takeprofit))
-            sl = round(bid * (1 + stoploss))
-            pid = json.loads(self.lnm.market_short(quantity = quantity, leverage = leverage,  takeprofit = tp, stoploss = sl))['position']['pid']
-            pid_list.append(pid)
+            last = json.loads(self.lnm.get_last())['lastPrice']
+            tp = round(last * (1 - takeprofit))
+            sl = round(last * (1 + stoploss))
+            id = json.loads(self.lnm.market_short(quantity = quantity, leverage = leverage,  takeprofit = tp, stoploss = sl))['id']
+            id_list.append(id)
           else:
             side = 'neutral'
             logging.info('Stay neutral')
@@ -131,34 +131,34 @@ class TAS():
       else:
         if (analysis['RECOMMENDATION'] == 'STRONG_BUY'):
           side = 'long'
-          offer = json.loads(self.lnm.get_bid_offer())['offer']
-          tp = round(offer * (1 + takeprofit))
-          sl = round(offer * (1 - stoploss))
-          pid = json.loads(self.lnm.market_long(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
-          pid_list.append(pid)
+          last = json.loads(self.lnm.get_last())['lastPrice']
+          tp = round(last * (1 + takeprofit))
+          sl = round(last * (1 - stoploss))
+          id = json.loads(self.lnm.market_long(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['id']
+          id_list.append(id)
         elif (analysis['RECOMMENDATION'] == 'STRONG_SELL'):
           side = 'short'
-          bid = json.loads(self.lnm.get_bid_offer())['bid']
-          tp = round(bid * (1 - takeprofit))
-          sl = round(bid * (1 + stoploss))
-          pid = json.loads(self.lnm.market_short(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['position']['pid']
-          pid_list.append(pid)
+          last = json.loads(self.lnm.get_last())['lastPrice']
+          tp = round(last * (1 - takeprofit))
+          sl = round(last * (1 + stoploss))
+          id = json.loads(self.lnm.market_short(quantity = quantity, leverage = leverage, takeprofit = tp, stoploss = sl))['id']
+          id_list.append(id)
         else:
           side = 'neutral'
-          pid = ''     
+          id = ''     
         
       if time() > timeout:
         break
       
       sleep(t_interval)
 
-    self.lnm.close_position(pid)
-    pid_list.append(pid)
+    self.lnm.close_position(id)
+    id_list.append(id)
 
     closed_positions = json.loads(self.lnm.get_positions(type_pos='closed'))
     df_closed_positions = pd.DataFrame.from_dict(closed_positions)
 
-    df_closed_pos = df_closed_positions[df_closed_positions['pid'].isin(pid_list)].copy()
+    df_closed_pos = df_closed_positions[df_closed_positions['id'].isin(id_list)].copy()
 
     pl = df_closed_pos['pl'].sum()
 
@@ -167,3 +167,8 @@ class TAS():
     path = os.path.join(os.path.dirname(__file__), "df_closed_pos.csv")
     df_closed_pos.to_csv(path)
     logging.info('df_closed_pos.csv saved in strategies folder')
+
+
+
+
+

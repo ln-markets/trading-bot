@@ -6,7 +6,6 @@ import json
 
 logging.basicConfig(level=logging.INFO)
 
-
 class lnm_client():
     # Connection to LN Markets API
     def __init__(self, options):
@@ -49,12 +48,12 @@ class lnm_client():
         return self.lnm.futures_new_position(params)
     
     
-    def close_position(self, pid):
+    def close_position(self, id):
         params = {
-            'pid': pid,
+            'id': id,
             }
         logging.info(datetime.datetime.fromtimestamp(time()))
-        logging.info(f'Close position pid = {pid}')
+        logging.info(f'Close position id = {id}')
 
         return self.lnm.futures_close_position(params)
 
@@ -64,21 +63,5 @@ class lnm_client():
             }
         return self.lnm.futures_get_positions(params)
 
-    def get_bid_offer(self):
+    def get_last(self):
         return self.lnm.futures_get_ticker()
-
-    
-
-
-# options = {
-#     'key': 'dR2dnom1oMljsN33DJjxNA7bSvItEg82sdZ00HjxY7s=',
-#     'secret': '4VW5Zp5K4DqOZC8Zr4jd2dw5Bi/G8nxs9qEK3fQ7aIVGrzjsczMpbZQonKoe89N+V3MwFdUHoYn1ydh7eHf5Rg==',
-#     'passphrase': 'dg05hcihaci8f',
-#     'network': 'testnet'}
-
-# lnm = lnm_client(options)
-
-
-# lnm.close_position(pid='2729a816-f22c-4488-a29b-972f67cee967')
-# lnm.market_long(quantity = 10, leverage = 10, takeprofit = 25000, stoploss = 20000)
-# print(json.loads(lnm.get_bid_offer())['offer'])

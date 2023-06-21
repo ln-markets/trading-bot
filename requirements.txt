@@ -1,4 +1,4 @@
-ln-markets >= 1.0.4
+ln-markets >= 2.0.1
 pyaml >= 6.0
 tradingview_ta >= 3.2.9
 pandas >= 1.4.2

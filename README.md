@@ -12,6 +12,8 @@ Download this Github repopsitory and install dependencies.
 ```
 pip install -r requirements.txt
 ```
+This code works with LN Markets Python module >= 2.0.1, released for with LN Markets API V2.
+You can upgrade your local version running pip install ln-markets==2.0.1.
 
 ## Authentication
 

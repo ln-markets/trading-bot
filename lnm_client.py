@@ -6,6 +6,7 @@ import json
 
 logging.basicConfig(level=logging.INFO)
 
+
 class lnm_client():
     # Connection to LN Markets API
     def __init__(self, options):
@@ -15,11 +16,9 @@ class lnm_client():
             logging.warning('There is probably an error with your LN Markets credentials')
         else:
             logging.info('Connection to LN Markets ok!')
-        
 
     def get_user(self):
         print(self.lnm.get_user())
-
 
     def market_long(self, quantity, leverage, takeprofit, stoploss):
         params = {
@@ -31,8 +30,9 @@ class lnm_client():
             'stoploss': stoploss
         }
         logging.info(datetime.datetime.fromtimestamp(time()))
-        logging.info(f'New Market Buy Running for Quantity = {quantity}, leverage = {leverage}, take profit = {takeprofit}, stop loss = {stoploss}')
-        return self.lnm.futures_new_position(params)
+        logging.info(
+            f'New Market Buy Running for Quantity = {quantity}, leverage = {leverage}, take profit = {takeprofit}, stop loss = {stoploss}')
+        return self.lnm.futures_new_trade(params)
 
     def market_short(self, quantity, leverage, takeprofit, stoploss):
         params = {
@@ -44,24 +44,24 @@ class lnm_client():
             'stoploss': stoploss
         }
         logging.info(datetime.datetime.fromtimestamp(time()))
-        logging.info(f'New Market Sell Running for Quantity = {quantity}, leverage = {leverage}, take profit = {takeprofit}, stop loss = {stoploss}')
-        return self.lnm.futures_new_position(params)
-    
-    
-    def close_position(self, id):
+        logging.info(
+            f'New Market Sell Running for Quantity = {quantity}, leverage = {leverage}, take profit = {takeprofit}, stop loss = {stoploss}')
+        return self.lnm.futures_new_trade(params)
+
+    def close_position(self, operation_id):
         params = {
-            'id': id,
-            }
+            'id': operation_id,
+        }
         logging.info(datetime.datetime.fromtimestamp(time()))
-        logging.info(f'Close position id = {id}')
+        logging.info(f'Close position id = {operation_id}')
 
-        return self.lnm.futures_close_position(params)
-
-    def get_positions(self, type_pos):
-        params = {
-            'type': type_pos,
-            }
-        return self.lnm.futures_get_positions(params)
+        return self.lnm.futures_close(params)
 
     def get_last(self):
         return self.lnm.futures_get_ticker()
+
+    def get_trades(self, type_trade):
+        params = {
+            'type': type_trade,
+        }
+        return self.lnm.futures_get_trades(params)

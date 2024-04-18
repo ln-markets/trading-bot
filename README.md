@@ -8,7 +8,7 @@ Please use carefully, preferably on Testnet or with small amounts.
 
 ## Install
 
-Download this Github repopsitory and install dependencies.
+Download this Github repository and install dependencies.
 ```
 pip install -r requirements.txt
 ```
@@ -24,7 +24,7 @@ Without them, you will not be able to authenticate.
 > :warning: **Never share your API Key, Secret or Passphrase**
 
 Open the 'configuration.yml' file and complete with your LN Markets API credentials.
-You can also add the paramter network with 'testnet' for [LN Markets Testnet](https://testnet.lnmarkets.com/) and 'mainnet' for [LN Markets mainnet](https://lnmarkets.com/).
+You can also add the parameter network with 'testnet' for [LN Markets Testnet](https://testnet.lnmarkets.com/) and 'mainnet' for [LN Markets mainnet](https://lnmarkets.com/).
 
 ## Strategies
 
@@ -35,7 +35,7 @@ Current available strategies are:
 More details below.
 
 Open the 'configuration.yml' file.
-Then choose the strategy you want for your trading bot affecting True to the corresponding variable (and False to others).
+Then choose the strategy you want for your trading bot setting True to the corresponding variable (and False to others).
 ```
 # Example
 Strategies: 
@@ -99,4 +99,4 @@ After timeout, you will find all the bot's trades during its execution in the CS
 
 Feel free to customize the bot and add your own strategies.
 
-If you want to use more features from [LN Markets API](https://docs.lnmarkets.com/api/v1/), checkk out the full documentation.
+If you want to use more features from [LN Markets API](https://docs.lnmarkets.com/api/v1/), check out the full documentation.

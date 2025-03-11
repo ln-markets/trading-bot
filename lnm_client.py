@@ -3,9 +3,11 @@ import datetime
 from time import time
 import logging
 import json
+from config_loader import yaml_file
 
 logging.basicConfig(level=logging.INFO)
 
+operate = yaml_file.get("operate", True)
 
 class lnm_client():
     # Connection to LN Markets API
@@ -32,6 +34,11 @@ class lnm_client():
         logging.info(datetime.datetime.fromtimestamp(time()))
         logging.info(
             f'New Market Buy Running for Quantity = {quantity}, leverage = {leverage}, take profit = {takeprofit}, stop loss = {stoploss}')
+
+        if not operate:
+            logging.debug("🚫 Blocked call (`operate: false` no configuration.yml)")
+            return {}
+
         return self.lnm.futures_new_trade(params)
 
     def market_short(self, quantity, leverage, takeprofit, stoploss):
@@ -46,6 +53,11 @@ class lnm_client():
         logging.info(datetime.datetime.fromtimestamp(time()))
         logging.info(
             f'New Market Sell Running for Quantity = {quantity}, leverage = {leverage}, take profit = {takeprofit}, stop loss = {stoploss}')
+
+        if not operate:
+            logging.debug("🚫 Blocked call (`operate: false` no configuration.yml)")
+            return {}
+
         return self.lnm.futures_new_trade(params)
 
     def close_position(self, operation_id):
@@ -54,6 +66,10 @@ class lnm_client():
         }
         logging.info(datetime.datetime.fromtimestamp(time()))
         logging.info(f'Close position id = {operation_id}')
+
+        if not operate:
+            logging.debug("🚫 Blocked call (`operate: false` no configuration.yml)")
+            return {}
 
         return self.lnm.futures_close(params)
 

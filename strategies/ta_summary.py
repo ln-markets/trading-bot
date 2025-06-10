@@ -7,13 +7,22 @@ import pandas as pd
 from tradingview_ta import TA_Handler, Interval
 
 from lnm_client import lnm_client
+from config_loader import yaml_file
 
+logging.basicConfig(level=logging.INFO)
+
+operate = yaml_file.get("operate", True)
 
 def process_long(self, quantity, leverage, takeprofit, stoploss, id_list):
     last = json.loads(self.lnm.get_last())['lastPrice']
     tp = round(last * (1 + takeprofit))
     sl = round(last * (1 - stoploss))
-    # print(self.lnm.market_long(quantity=quantity, leverage=leverage, takeprofit=tp, stoploss=sl))
+
+    if not operate:
+        self.lnm.market_long(quantity=quantity, leverage=leverage, takeprofit=tp, stoploss=sl)
+        return
+
+    # logging.debug(self.lnm.market_long(quantity=quantity, leverage=leverage, takeprofit=tp, stoploss=sl))
     operation_id = json.loads(self.lnm.market_long(quantity=quantity, leverage=leverage, takeprofit=tp, stoploss=sl))[
         'id']
     id_list.append(operation_id)
@@ -23,6 +32,12 @@ def process_short(self, quantity, leverage, takeprofit, stoploss, id_list):
     last = json.loads(self.lnm.get_last())['lastPrice']
     tp = round(last * (1 - takeprofit))
     sl = round(last * (1 + stoploss))
+
+    if not operate:
+        self.lnm.market_short(quantity=quantity, leverage=leverage, takeprofit=tp, stoploss=sl)
+        return
+
+    self.lnm.market_short(quantity=quantity, leverage=leverage, takeprofit=tp, stoploss=sl)
     operation_id = json.loads(self.lnm.market_short(quantity=quantity, leverage=leverage, takeprofit=tp, stoploss=sl))[
         'id']
     id_list.append(operation_id)
@@ -35,6 +50,11 @@ class TAS:
         self.lnm = lnm_client(self.options)
 
     def process_close(self, operation_id, id_list):
+
+        if not operate:
+            self.lnm.close_position(operation_id)
+            return
+
         self.lnm.close_position(operation_id)
         # remove the id from the list
         id_list.remove(operation_id)
@@ -75,9 +95,14 @@ class TAS:
         timeout = time() + 60 * timeout
 
         id_list = []
+        try:
+            logging.debug(f"DEBUG - Chamada para get_ta() com symbol={symbol}, exchange={exchange}")
+            analysis = TAS.get_ta(symbol, screener, exchange, interval)
+        except Exception as e:
+            logging.warning(f"Erro ao obter análise do TradingView: {e}")
+            sleep(10)
 
-        analysis = TAS.get_ta(symbol, screener, exchange, interval)
-        print(analysis)
+        logging.info(analysis)
         if analysis['RECOMMENDATION'] == 'STRONG_BUY':
             side = 'long'
             process_long(self, quantity, leverage, takeprofit, stoploss, id_list)
@@ -91,8 +116,14 @@ class TAS:
         sleep(t_interval)
 
         while True:
-            analysis = TAS.get_ta(symbol, screener, exchange, interval)
-            print(analysis)
+            try:
+                logging.debug(f"DEBUG - Chamada para get_ta() com symbol={symbol}, exchange={exchange}")
+                analysis = TAS.get_ta(symbol, screener, exchange, interval)
+            except Exception as e:
+                logging.warning(f"Erro ao obter análise do TradingView: {e}")
+                sleep(10)
+
+            logging.info(analysis)
 
             num_pos_running = len(json.loads(self.lnm.get_trades(type_trade='running')))
             id_running = [json.loads(self.lnm.get_trades(type_trade='running'))[i]['id'] for i in
@@ -146,7 +177,7 @@ class TAS:
             if time() > timeout:
                 break
 
-            print(id_list)
+            logging.debug(id_list)
             sleep(t_interval)
 
         for operation_id in id_list:
